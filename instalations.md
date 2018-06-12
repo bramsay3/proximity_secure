@@ -1,8 +1,13 @@
-6/11/18
-kafka-python (https://github.com/dpkp/kafka-python)
-version 1.4.3
+6/12/18
+confluent-kafka (https://github.com/dpkp/kafka-python)
+version 0.11.4
 
-pip3 install kafka-python
+pip3 install confluent-kafka
+
+on all nodes:
+[pegasus]: peg sshcmd-cluster spark-cluster "pip3 install confluent-kafka"
+
+
 
 6/11/18
 ksql-python (https://github.com/bryanyang0528/ksql-python)
