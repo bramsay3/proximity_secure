@@ -19,25 +19,26 @@ if __name__ == '__main__':
 
     running = True
     msg = read.poll()
-    while running:
+    try:
+        while running:
 
-        time.sleep(1)
-        print('sec')
-        
-        if msg is None:
-            continue
-        if msg.error():
-            if msg.error().code() == KafkaError._PARTITION_EOF:
-                sys.stderr.write('%% %s reached EOF - partition %d, offset %d' % 
-                                (msg.topic(), msg.partition(), msg.offset()))
+            time.sleep(1)
+            print('sec')
+            
+            if msg is None:
+                continue
+            if msg.error():
+                if msg.error().code() == KafkaError._PARTITION_EOF:
+                    sys.stderr.write('%% %s reached EOF - partition %d, offset %d' % 
+                                    (msg.topic(), msg.partition(), msg.offset()))
+                else:
+                    raise KafkaException(msg.error())
             else:
-                raise KafkaException(msg.error())
-        else:
-            sys.stderr.write('%% %s - partition %d, offset %d\n key: %s  value: %s\n' %
-                             (msg.topic(), msg.partition(), msg.offset(),
-                              msg.key(),msg.value().decode('utf-8')))
+                sys.stderr.write('%% %s - partition %d, offset %d\n key: %s  value: %s\n' %
+                                 (msg.topic(), msg.partition(), msg.offset(),
+                                  msg.key(),msg.value().decode('utf-8')))
 
     except KeyboardInterrupt:
         sys.stderr.write('%% User terminated')
 
-        msg = read.poll()
+    msg = read.poll()
