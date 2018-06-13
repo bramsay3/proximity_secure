@@ -31,7 +31,7 @@ if __name__ == '__main__':
         if err:
             sys.stderr.write('%% **Message delivery failed**\n **error: %s\n' % err)
         else:
-            sys.stderr.write('%% Message delivered to %s partion:[%d], offset: %d\n' %
+            sys.stderr.write('%% Message delivered to %s - partion:[%d], offset:%d\n' %
                              (msg.topic(), msg.partition(), msg.offset()))
 
     # Read lines from stdin, produce each line to Kafka
