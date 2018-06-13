@@ -14,12 +14,12 @@ if __name__ == '__main__':
 
     read = Consumer(**conf)
 
-    read.subscribe(topic_phone)
+    read.subscribe([topic_phone])
 
-    runing = True
+    running = True
 
     try:
-        while runing:
+        while running:
             msg = read.poll() 
             if msg is None:
                 continue
@@ -31,11 +31,11 @@ if __name__ == '__main__':
             else:
                 sys.stderr.write('%% %s - partition %d, offset %d key %s:\n' %
                                  (msg.topic(), msg.partition(), msg.offset(),
-                                  str(msg.key())))
+                                  msg.key()))
                 print(msg.value())
 
-    except KeyboardInterrupt:
-        sys.stderr.write('%% User terminated')
+    #except KeyboardInterrupt:
+     #   sys.stderr.write('%% User terminated')
 
 
 
