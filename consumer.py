@@ -17,26 +17,21 @@ if __name__ == '__main__':
     read.subscribe([topic_phone])
 
     running = True
-
-    try:
-        while running:
-            msg = read.poll() 
-            if msg is None:
-                continue
-                if msg.error().code() == KafkaError._Partition_EOF:
-                    sys.stderr.write('%% %s reached EOF - partition %d, offset %d' % 
-                                    (msg.topic(), msg.partition(), msg.offset()))
-                else:
-                    raise KafkaException(msg.error())
+    while running:
+        msg = read.poll() 
+        if msg is None:
+            continue
+        if msg.error():
+            if msg.error().code() == KafkaError._PARTITION_EOF:
+                sys.stderr.write('%% %s reached EOF - partition %d, offset %d' % 
+                                (msg.topic(), msg.partition(), msg.offset()))
             else:
-                sys.stderr.write('%% %s - partition %d, offset %d key %s:\n' %
-                                 (msg.topic(), msg.partition(), msg.offset(),
-                                  msg.key()))
-                print(msg.value())
+                raise KafkaException(msg.error())
+        else:
+            sys.stderr.write('%% %s - partition %d, offset %d key %s:\n' %
+                             (msg.topic(), msg.partition(), msg.offset(),
+                              msg.key()))
+            sys.stderr.write(str(msg.value()))
 
-    #except KeyboardInterrupt:
-     #   sys.stderr.write('%% User terminated')
-
-
-
-
+#    except KeyboardInterrupt:
+#        sys.stderr.write('%% User terminated')
