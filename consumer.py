@@ -18,10 +18,9 @@ if __name__ == '__main__':
     read.subscribe([topic_phone])
 
     running = True
-    msg = read.poll()
-    try:
-        while running:
-
+    while running:
+        try:
+            msg = read.poll()
             time.sleep(1)
             print('sec')
             
@@ -38,7 +37,5 @@ if __name__ == '__main__':
                                  (msg.topic(), msg.partition(), msg.offset(),
                                   msg.key(),msg.value().decode('utf-8')))
 
-    except KeyboardInterrupt:
-        sys.stderr.write('%% User terminated')
-
-    msg = read.poll()
+        except KeyboardInterrupt:
+            sys.stderr.write('%% User terminated')
