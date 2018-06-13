@@ -1,5 +1,6 @@
 from confluent_kafka import Consumer, KafkaError, KafkaException
 import sys
+import time
 
 
 if __name__ == '__main__':
@@ -17,8 +18,12 @@ if __name__ == '__main__':
     read.subscribe([topic_phone])
 
     running = True
+    msg = read.poll()
     while running:
-        msg = read.poll() 
+
+        time.sleep(1)
+        print('sec')
+        
         if msg is None:
             continue
         if msg.error():
@@ -28,10 +33,11 @@ if __name__ == '__main__':
             else:
                 raise KafkaException(msg.error())
         else:
-            sys.stderr.write('%% %s - partition %d, offset %d key %s:\n' %
+            sys.stderr.write('%% %s - partition %d, offset %d\n key: %s  value: %s\n' %
                              (msg.topic(), msg.partition(), msg.offset(),
-                              msg.key()))
-            sys.stderr.write(str(msg.value()))
+                              msg.key(),msg.value().decode('utf-8')))
 
-#    except KeyboardInterrupt:
-#        sys.stderr.write('%% User terminated')
+    except KeyboardInterrupt:
+        sys.stderr.write('%% User terminated')
+
+        msg = read.poll()
