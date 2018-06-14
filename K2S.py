@@ -1,10 +1,10 @@
 
-from pyspark import SparkContext
+from pyspark import SparkContext, SparkConf
 from pyspark.streaming import StreamingContext
 from pyspark.streaming.kafka import KafkaUtils
 
 
-sc = SparkContext('local', "proximity_solver")
+sc = SparkContext("localhost:9092", "proximity_solver")
 
 #Create streaming context with mini-batch interval of 1 second
 ssc = StreamingContext(sc, 1)
