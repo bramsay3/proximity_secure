@@ -4,12 +4,13 @@ from pyspark.streaming import StreamingContext
 from pyspark.streaming.kafka import KafkaUtils
 
 
-sc = SparkContext("localhost:9092", "proximity_solver")
+conf = SparkConf()
+sc = SparkContext(master = 'localhost:9092', appName="proximity_solver", conf = conf)
 
 #Create streaming context with mini-batch interval of 1 second
 ssc = StreamingContext(sc, 1)
 
-directKafkaStream = KafkaUtils.createDirectStream(ssc, 'phone_loc', {"bootstrap.servers": 'localhost:9092'})
+directKafkaStream = KafkaUtils.createDirectStream(ssc, ['phone_loc'], {"bootstrap.servers": 'localhost:9092'})
 
 offsetRanges = []
 
