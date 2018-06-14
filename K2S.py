@@ -4,7 +4,7 @@ from pyspark.streaming import StreamingContext
 from pyspark.streaming.kafka import KafkaUtils
 
 
-sc = SparkContext('localhost:9092', "proximity_solver")
+sc = SparkContext('local', "proximity_solver")
 
 #Create streaming context with mini-batch interval of 1 second
 ssc = StreamingContext(sc, 1)
@@ -20,7 +20,7 @@ def storeOffsetRanges(rdd):
 
 def printOffsetRanges(rdd):
     for o in offsetRanges:
-    print "%s %s %s %s" % (o.topic, o.partition, o.fromOffset, o.untilOffset)
+        print("%s %s %s %s" % (o.topic, o.partition, o.fromOffset, o.untilOffset))
 
 directKafkaStream \
  .transform(storeOffsetRanges) \
