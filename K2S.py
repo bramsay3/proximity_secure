@@ -5,8 +5,8 @@ from pyspark.streaming.kafka import KafkaUtils
 
 
 conf = SparkConf()
-sc = SparkContext(master = 'localhost:9092', appName="proximity_solver", conf = conf)
-
+sc = SparkContext(master = 'local[*]', appName="proximity_solver", conf = conf)
+sc.setLogLevel("WARN")
 #Create streaming context with mini-batch interval of 1 second
 ssc = StreamingContext(sc, 1)
 
