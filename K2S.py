@@ -26,3 +26,6 @@ def printOffsetRanges(rdd):
 directKafkaStream \
  .transform(storeOffsetRanges) \
  .foreachRDD(printOffsetRanges)
+
+ssc.start()
+ssc.awaitTermination()
