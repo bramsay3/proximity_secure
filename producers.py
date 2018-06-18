@@ -15,7 +15,6 @@ if __name__ == '__main__':
     phone_conf = {'bootstrap.servers': broker,
                   'client.id': socket.gethostname()}
 
-
     phone_prod = Producer(**phone_conf)
 
     #Transaction location producer configuration

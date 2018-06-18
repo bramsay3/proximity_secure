@@ -12,6 +12,14 @@ ssc = StreamingContext(sc, 1)
 
 directKafkaStream = KafkaUtils.createDirectStream(ssc, ['phone_loc'], {"bootstrap.servers": 'localhost:9092'})
 
+lines = kvs.map(lambda x: x[1])
+counts = lines.flatMap(lambda line: line.split(“ “)) \
+              .map(lambda word: (word, 1)) \
+              .reduceByKey(lambda a, b: a+b)
+
+counts.pprint()
+
+
 offsetRanges = []
 
 def storeOffsetRanges(rdd):
