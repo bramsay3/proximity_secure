@@ -4,42 +4,69 @@ import time
 import datetime
 
 
-
-
-
 class Generator():
     """Generates faux-data for proximity_secure customers"""
 
-
-
-    __init__(self):
+    def __init__(self):
+        self.minute_steps = 60
         self.num_cust = int(1e7) #10 million
-        self.timestamp = get_time()
-        self.locations = None
+        self.data_type = 'phone'
+        self.timestep = datetime.timedelta(0,60) #60 seconds
+
+        self.crnt_timestamp = self.get_time()
+        self.crnt_locations = None
+        self.crnt_user_data = self.get_user_data()
 
 
-    __init__(self, num_of_customers):
-        if type(num_of_customers) is not int
-            raise ValueError('num_of_customers should be an int but was given ' + str(type(num_of_customers)))
+
+
+    def __init__(self, data_type, num_of_customers, minute_steps):
+        if type(data_type) is not str:
+            raise ValueError('data_type must be a string but user gave type: ' + str(type(data_type)))
+
+        if data_type not in ['phone','transaction']:
+            raise ValueError('data_type currently supports "phone" or "transaction" generation but user gave: ' + data_type)
+
+        if type(num_of_customers) is not int:
+            raise ValueError('num_of_customers should be an int but user gave: ' + str(type(num_of_customers)))
+        
+        self.minute_steps = minute_steps
         self.num_cust = num_of_customers
-        self.timestamp = get_time()
-        self.locations = None
+        self.data_type = data_type
+        if data_type is 'phone':
+            self.timestep = datetime.timedelta(0,60) #60 seconds
+        else:
+            self.timestep = datetime.timedelta(0,60*60*2) #2 hours
+
+        self.crnt_timestamp = self.get_time()
+        self.crnt_locations = None
+        self.crnt_user_data = self.get_user_data()
+
+
+
 
     # generate data for all users for the specified number of minutes
-    def gen_user_data_all(self, min = 60):
-        
+    def gen_user_data_all(self):
+        steps = self.minute_steps
+
+        for i in range(steps):
+            self.crnt_user_data.extend(self.get_user_data())
+        return self.crnt_user_data
 
 
     def get_user_data(self):
-        if self.locations is None:
-            self.locations = get_coords()
+        if self.crnt_locations is None:
+            self.crnt_locations = self.get_coords()
         else:
-
+            self.update_coords()
+            self.crnt_timestamp = self.crnt_timestamp + self.timestep
 
         user_data = []
 
         for i in range(self.num_cust):
-            user_data.append(get_user_entry(i,self.locations[i]))
+            user_data.append(self.get_user_entry(i,self.crnt_locations[i]))
+
+        #print(user_data,'\n')
         return user_data
 
 
@@ -50,19 +77,19 @@ class Generator():
     #   Location        =>     <"lat":#, "lng":#>
     #   ?Address        =>     <func(location)>
 
-    def get_user_entry(self, user_ID, phone_loc):
+    def get_user_entry(self, user_ID, location):
 
-        user_entry = [{},{},{},{},{}]
+        user_entry = {}
+        location_str = self.data_type+'_loc'
 
-        user_entry[user_ID]['user_ID'] = user_ID
-        user_entry[user_ID]['timestamp'] = self.timestamp
-        user_entry[user_ID]['phone_loc'] = phone_loc
+        user_entry['user_ID'] = user_ID
+        user_entry['timestamp'] = self.crnt_timestamp.isoformat(sep=' ')
+        user_entry[location_str] = location
         return user_entry
 
-    def get_time():
-        start_date = datetime.datetime(2019, 2, 14, 16)
-        date_str = start_date.isoformat(sep=' ')
-        return date_str
+    def get_time(self):
+        date = datetime.datetime(2019, 2, 14, 16)
+        return date
 
 
 
@@ -74,9 +101,10 @@ class Generator():
     #
     #   Lower Left - Lat:37 Long:-122       Lower Right - Lat:37 Long:-92
     #
-    def get_coords(self, lat_range=[37,47], lng_range=[-122,-92], samples=self.num_cust):
+    def get_coords(self, lat_range=[37,47], lng_range=[-122,-92]):
 
         locations = []
+        samples = self.num_cust
 
         def get_latitude():
             latitude_array = np.random.uniform(lat_range[0], lat_range[1], samples)
@@ -90,25 +118,33 @@ class Generator():
         lngs = get_longitude()
 
         for i in range(samples):
-            d = dict()
-            d["lat"] = lats[i]
-            d["lng"] = lngs[i]
+            d = self.add_gps_to_dic(lats[i],lngs[i])
             locations.append(d)
 
         return locations
 
+    def add_gps_to_dic(self, lat, lng):
+        d = dict()
+        d["lat"] = lat
+        d["lng"] = lng
+        return d
+
+
     def update_coords(self):
-        #lambda?
+        new_locations = map(self.resample_coord, self.crnt_locations)
+        self.crnt_locations = list(new_locations)
 
 
 
     #want to call anything outside of .02 in a minute as flagged
     def resample_coord(self, coord_dic, lat_sig=.005, lng_sig=.005):
         cov = np.diag([lat_sig,lng_sig]) #symetric
-
         coord = list(coord_dic.values())
 
-        new_coord = np.random.multivarite_normal(np.asarray(coord), cov)
+        new_coord = np.random.multivariate_normal(np.asarray(coord), cov)
+        dict_entry = self.add_gps_to_dic(new_coord[0],new_coord[1])
+
+        return dict_entry
 
 
 
