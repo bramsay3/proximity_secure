@@ -37,6 +37,7 @@ if __name__ == '__main__':
     for line in sys.stdin:
         try:
             # Produce line (without newline)
+            print(line.rstrip())
             phone_prod.produce(topic_phone, line.rstrip(), callback=delivery_callback)
 
         except BufferError as e:

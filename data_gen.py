@@ -66,7 +66,6 @@ class Generator():
         for i in range(self.num_cust):
             user_data.append(self.get_user_entry(i,self.crnt_locations[i]))
 
-        #print(user_data,'\n')
         return user_data
 
 

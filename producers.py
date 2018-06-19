@@ -1,11 +1,12 @@
 from confluent_kafka import Producer
 import socket
 import sys
+import time
 
-class Production
+class Production:
 
     def __init__(self, topic_name, port=9092):
-        broker = 'localhost:' + port
+        broker = 'localhost:' + str(port)
         self.topic = topic_name
 
         # Producer configuration
@@ -19,10 +20,12 @@ class Production
 
     def start_producing(self, data_feed, continuous=False):
         if continuous:
-            while true:
+            while True:
                 for i in range(len(data_feed)):
-                    self.prod.produce(self.topic,data_feed)
+                    self.prod.produce(self.topic,str(data_feed[i]).replace("'",'"'))
+                time.sleep(3)
+                print('recycling data')
         else:
             for i in range(len(data_feed)):
-                    self.prod.produce(self.topic,data_feed)
+                self.prod.produce(self.topic,str(data_feed[i]).replace("'",'"'))
             
