@@ -10,10 +10,10 @@ sc.setLogLevel("WARN")
 #Create streaming context with mini-batch interval of 1 second
 ssc = StreamingContext(sc, 1)
 
-directKafkaStream = KafkaUtils.createDirectStream(ssc, ['phone_loc'], {"bootstrap.servers": 'localhost:9092'})
+kvs = KafkaUtils.createDirectStream(ssc, ['phone_loc'], {"bootstrap.servers": 'localhost:9092'})
 
 lines = kvs.map(lambda x: x[1])
-counts = lines.flatMap(lambda line: line.split(“ “)) \
+counts = lines.flatMap(lambda line: line.split(" ")) \
               .map(lambda word: (word, 1)) \
               .reduceByKey(lambda a, b: a+b)
 
@@ -30,10 +30,10 @@ def storeOffsetRanges(rdd):
 def printOffsetRanges(rdd):
     for o in offsetRanges:
         print("%s %s %s %s" % (o.topic, o.partition, o.fromOffset, o.untilOffset))
-
-directKafkaStream \
+"""
+kvs \
  .transform(storeOffsetRanges) \
  .foreachRDD(printOffsetRanges)
-
+"""
 ssc.start()
 ssc.awaitTermination()
