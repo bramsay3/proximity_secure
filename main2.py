@@ -1,10 +1,12 @@
 from data_gen import Generator
 from producers import Production
+import time
 
-
-gen = Generator('transaction',5,5)
-data = gen.gen_user_data_all()
-
+gen = Generator('transaction',10,1)
 prod = Production('trans_loc')
 
-prod.start_producing(data,True)
+while True:
+    data = gen.get_user_data()
+    prod.start_producing(data)
+    time.sleep(4)
+    
