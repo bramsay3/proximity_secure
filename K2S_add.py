@@ -19,10 +19,11 @@ dstream_combo = KafkaUtils.createDirectStream(ssc, ['COMBO'], {"bootstrap.server
 
 json_combo  = dstream_combo.map(lambda x: json.loads(x[1]))
 
-gps_dist = json_combo.map(lambda data:distance(data)) \
-            .filter(lambda dist:dist>200)
+json_dist = json_combo.map(lambda data:distance(data)) #\
+    #        .filter(lambda dist:dist>200)
 
-gps_dist.pprint(100)
+json_dist.pprint(100)
+
 
 def distance(json_data, miles=True):
     def extract_coords(topic_name):
@@ -36,7 +37,9 @@ def distance(json_data, miles=True):
     loc_2 = extract_coords('TRANSACTION_LOC')
     distance = haversine(loc_1, loc_2, miles=miles)
 
-    return distance
+    json_data['distance'] = distance
+    
+    return json_data
 
 
 

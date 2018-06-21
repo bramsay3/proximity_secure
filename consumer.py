@@ -9,6 +9,7 @@ if __name__ == '__main__':
     topic_phone = 'phone_loc'
     topic_trans = 'trans_loc'
     group_id = 'general'
+    topic_combo = 'COMBO'
 
     conf = {'bootstrap.servers': broker,
             'group.id': group_id}
@@ -21,6 +22,7 @@ if __name__ == '__main__':
     try:
         while running:
             msg = read.poll()
+
             
             if msg is None:
                 continue
@@ -31,9 +33,8 @@ if __name__ == '__main__':
                 else:
                     raise KafkaException(msg.error())
             else:
-                sys.stderr.write('%% %s - partition %d, offset %d\n key: %s  value: %s\n' %
-                                 (msg.topic(), msg.partition(), msg.offset(),
-                                  msg.key(),msg.value().decode('utf-8')))
-
+                sys.stderr.write('%% %s - partition %d, offset %d\n key: %s  value: %s\n' %(msg.topic(), msg.partition(), msg.offset(),
+ msg.key(),msg.value().decode('utf-8')))
+                print('\n')
     except KeyboardInterrupt:
         sys.stderr.write('%% User terminated')
