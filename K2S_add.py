@@ -3,6 +3,7 @@ from pyspark.streaming import StreamingContext
 from pyspark.streaming.kafka import KafkaUtils
 from haversine import haversine
 from cassandra.cluster import Cluster
+from cass_man import Cassandra_Manager
 
 
 import json
@@ -13,6 +14,9 @@ conf = SparkConf()
 sc = SparkContext(master = 'local[*]', appName="proximity_solver", conf = conf)
 sc.setLogLevel("WARN")
 
+manager = Cassandra_Manager()
+manager.create_keyspace()
+manager.create_table()
 
 #Create streaming context with mini-batch interval of 1 second
 ssc = StreamingContext(sc, 1)
@@ -20,47 +24,14 @@ ssc = StreamingContext(sc, 1)
 dstream_combo = KafkaUtils.createDirectStream(ssc, ['COMBO'], {"bootstrap.servers": 'localhost:9092'})
 
 json_combo  = dstream_combo.map(lambda x: json.loads(x[1]))
-json_dist = json_combo.map(lambda data:distance(data)) #\
-    #        .filter(lambda dist:dist>200)
+json_dist = json_combo.map(lambda data:distance(data)) 
+json_dist.foreachRDD(lambda rdd: rdd.foreach(lambda val: manager.insert(val)))
+
 
 json_dist.pprint(100)
 
 
-cluster = Cluster(['ec2-18-233-215-146.compute-1.amazonaws.com'])
-session = cluster.connect()
 
-def create_keyspace(session, keyspace_name = 'user_data'):
-    if type(keyspace_name) is not str:
-        raise TypeError('keyspace_name must be of type string but was given type: '\
-                        + str(type(keyspace_name)))
-    
-    make_keyspace = "CREATE KEYSPACE IF NOT EXISTS " + keyspace_name + " WITH " + \
-                    "replication = {'class':'SimpleStrategy', 'replication_factor':3}"
-
-    session.execute(make_keyspace)
-    session.execute('USE ' + keyspace_name)
-    print('Using Keyspace: ' + keyspace_name)
-
-def create_table(session, table_name = 'user_locs'):
-    if type(table_name) is not str:
-        raise TypeError('table_name must be of type string but was given' +\
-                        'type: '+ str(type(table_name)))
-
-    make_table = "CREATE TABLE IF NOT EXISTS " + table_name + \
-                 "(user_ID int PRIMARY KEY, " + \
-                 "transaction_lat float, " +\
-                 "transaction_lng float, " +\
-                 "transaction_time timestamp, "  +\
-                 "phone_lat float, " + \
-                 "phone_lng float, " + \
-                 "phone_time timestamp, " +\
-                 "distance float);"
-
-    session.execute(make_table)
-    print('Using Table: ' + table_name)
-
-create_keyspace(session)
-create_table(session)
 
 
 
