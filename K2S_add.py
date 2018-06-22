@@ -27,9 +27,41 @@ json_dist = json_combo.map(lambda data:distance(data)) #\
 json_dist.pprint(100)
 
 
-#cluster = Cluster(['18.233.215.146'])
-#session = cluster.connect()
+cluster = Cluster()
+session = cluster.connect(['18.233.215.146'])
+create_keyspace(session)
+create_table(session)
 
+
+
+def create_keyspace(session, keyspace_name = 'user_data'):
+    if type(keyspace_name) is not str:
+        raise TypeError('keyspace_name must be of type string but was given type: '\
+                        + str(type(keyspace_name)))
+    
+    make_keyspace = "CREATE KEYSPACE " + keyspace_name + " WITH " + \
+                    "replication = {'class':'SimpleStrategy', 'replication_factor':3}"
+
+    session.execute(make_keyspace)
+    session.execute('USE ' + keyspace_name)
+    print('Keyspace Created: ' + keyspace_name)
+
+def create_table(session, table_name = 'user_locs'):
+    if type(table_name) is not str:
+        raise TypeError('table_name must be of type string but was given' +\
+                        'type: '+ str(type(table_name)))
+
+    make_table = "CREATE TABLE " + table_name + "(user_ID int PRIMARY KEY, " + \
+                    "transaction_lat float, " +\
+                    "transaction_lng flaot, " +\
+                    "transaction_time, "  +\
+                    "phone_lat float, " + \
+                    "phone_lng float, " + \
+                    "phone_time, " +\
+                    "distance float)"
+
+    session.execute(make_table)
+    print('Table Created: ' + table_name)
 
 
 

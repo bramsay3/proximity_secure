@@ -58,7 +58,6 @@ def create_table(session, table_name = 'user_locs'):
                     "phone_lng float, " + \
                     "phone_time, " +\
                     "distance float)"
-                    
 
     session.execute(make_table)
     print('Table Created: ' + table_name)
