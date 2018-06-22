@@ -27,8 +27,8 @@ json_dist = json_combo.map(lambda data:distance(data)) #\
 json_dist.pprint(100)
 
 
-cluster = Cluster(['18.233.215.146'])
-session = cluster.connect()
+#cluster = Cluster(['18.233.215.146'])
+#session = cluster.connect()
 
 
 
