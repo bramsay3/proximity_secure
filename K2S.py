@@ -1,6 +1,8 @@
 from pyspark import SparkContext, SparkConf
 from pyspark.streaming import StreamingContext
 from pyspark.streaming.kafka import KafkaUtils
+from haversine import haversine
+from cassandra.cluster import Cluster
 
 import json
 
@@ -9,8 +11,7 @@ import json
 conf = SparkConf()
 sc = SparkContext(master = 'local[*]', appName="proximity_solver", conf = conf)
 sc.setLogLevel("WARN")
-sc.addFile("/home/ubuntu/.local/lib/python3.5/site-packages/haversine/__init__.py")
-from __init__ import haversine
+
 
 #Create streaming context with mini-batch interval of 1 second
 ssc = StreamingContext(sc, 1)
@@ -23,6 +24,23 @@ gps_dist = json_combo.map(lambda data:distance(data)) \
             .filter(lambda dist:dist>200)
 
 gps_dist.pprint(100)
+
+
+cluster = Cluster()
+session = cluster.connect(['18.233.215.146'])
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 def distance(json_data, miles=True):
     def extract_coords(topic_name):
@@ -37,16 +55,6 @@ def distance(json_data, miles=True):
     distance = haversine(loc_1, loc_2, miles=miles)
 
     return distance
-
-
-
-
-
-
-
-
-
-#json_combo.pprint()
 
 
 ssc.start()
