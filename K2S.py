@@ -26,8 +26,12 @@ gps_dist = json_combo.map(lambda data:distance(data)) \
 gps_dist.pprint(100)
 
 
-#cluster = Cluster()
-#session = cluster.connect(['18.233.215.146'])
+cluster = Cluster()
+session = cluster.connect(['18.233.215.146'])
+create_keyspace(session)
+create_table(session)
+
+
 
 def create_keyspace(session, keyspace_name = 'user_data'):
     if type(keyspace_name) is not str:
@@ -47,18 +51,17 @@ def create_table(session, table_name = 'user_locs'):
                         'type: '+ str(type(table_name)))
 
     make_table = "CREATE TABLE " + table_name + "(user_ID int PRIMARY KEY, " + \
-                    "transaction_lat decimal, " +\
-                    "transaction_lng decimal, " +\
+                    "transaction_lat float, " +\
+                    "transaction_lng flaot, " +\
                     "transaction_time, "  +\
-                    "phone_lat decimal, " + \
-                    "phone_lng decimal, " + \
+                    "phone_lat float, " + \
+                    "phone_lng float, " + \
                     "phone_time, " +\
-                    "distance decimal)"
+                    "distance float)"
                     
 
     session.execute(make_table)
     print('Table Created: ' + table_name)
-
 
 
 def distance(json_data, miles=True):
