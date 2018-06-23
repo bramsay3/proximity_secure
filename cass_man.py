@@ -3,7 +3,7 @@
 from cassandra.cluster import Cluster
 
 
-class Cassandra_Manager()
+class Cassandra_Manager():
 
     def __init__(self, cluser_IP=['ec2-18-233-215-146.compute-1.amazonaws.com']):
         cluster = Cluster(cluser_IP)
@@ -49,7 +49,7 @@ class Cassandra_Manager()
 
     def create_type(self):
 
-        make_type = "CREATE TYPE IF NOT EXISTS " + ".gps_loc" +\
+        make_type = "CREATE TYPE IF NOT EXISTS " + "gps_loc" +\
                      "(longitude float, " + \
                      "latitude float);"
 
@@ -63,7 +63,7 @@ class Cassandra_Manager()
                      "TRANSACTIONS_TIMESTAMP timestamp, " +\
                      "distance float, " +\
                      "PHONE_LOC FROZEN<gps_loc>, " +\
-                     "TRANSACTION_LOC FROZEN<gps_loc> " +\
+                     "TRANSACTION_LOC FROZEN<gps_loc>, " +\
                      "PHONE_TIMESTAMP timestamp, " +\
                      "PRIMARY KEY (USER_ID, TRANSACTIONS_TIMESTAMP));"
 

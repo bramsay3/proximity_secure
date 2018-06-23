@@ -4,7 +4,7 @@ from pyspark.streaming.kafka import KafkaUtils
 from haversine import haversine
 from cassandra.cluster import Cluster
 from cass_man import Cassandra_Manager
-
+import pyspark_cassandra
 
 import json
 
@@ -24,10 +24,13 @@ ssc = StreamingContext(sc, 1)
 dstream_combo = KafkaUtils.createDirectStream(ssc, ['COMBO'], {"bootstrap.servers": 'localhost:9092'})
 
 json_combo  = dstream_combo.map(lambda x: json.loads(x[1]))
-json_dist = json_combo.map(lambda data:distance(data)) 
-json_list = json_dist.foreachRDD(lambda rdd: rdd.collect())
-for user in json_list:
-    manager.insert(user)
+json_dist = json_combo.map(lambda data:distance(data))
+json_dist.flatMap(lambda val:manager.insert(json.dumps(val)))
+
+#json_list = json_dist.foreachRDD(lambda rdd: rdd.collect())
+#print(json_list)
+#for user in json_list:
+#    manager.insert(user)
 
 json_dist.pprint(100)
 
@@ -52,7 +55,7 @@ def distance(json_data, miles=True):
 
     json_data['distance'] = distance
     
-    return json_data
+    return json.dumps(json_data)
 
 ssc.start()
 ssc.awaitTermination()
