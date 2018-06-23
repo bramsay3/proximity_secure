@@ -1,31 +1,34 @@
 from pyspark import SparkContext, SparkConf
 from pyspark.streaming import StreamingContext
 from pyspark.streaming.kafka import KafkaUtils
+
 from haversine import haversine
+
 from cassandra.cluster import Cluster
 from cass_man import Cassandra_Manager
-import pyspark_cassandra
+from pyspark_cassandra import CassandraSparkContext
 
 import json
 
 
 
-conf = SparkConf()
-sc = SparkContext(master = 'local[*]', appName="proximity_solver", conf = conf)
+conf = SparkConf() \
+    .setAppName("proximity_secure") \
+    .setMaster('local[*]') \
+    .set("spark.cassandra.connection.host","ec2-18-233-215-146.compute-1.amazonaws.com")
+
+sc = CassandraSparkContext(conf = conf)
 sc.setLogLevel("WARN")
 
-manager = Cassandra_Manager()
-manager.create_keyspace()
-manager.create_table()
 
 #Create streaming context with mini-batch interval of 1 second
-ssc = StreamingContext(sc, 1)
+ssc = StreamingContext(sc, 2)
 
 dstream_combo = KafkaUtils.createDirectStream(ssc, ['COMBO'], {"bootstrap.servers": 'localhost:9092'})
 
 json_combo  = dstream_combo.map(lambda x: json.loads(x[1]))
 json_dist = json_combo.map(lambda data:distance(data))
-json_dist.flatMap(lambda val:manager.insert(json.dumps(val)))
+json_dist.saveToCassandra('users','locations')
 
 #json_list = json_dist.foreachRDD(lambda rdd: rdd.collect())
 #print(json_list)
