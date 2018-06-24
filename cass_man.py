@@ -50,8 +50,8 @@ class Cassandra_Manager():
     def create_type(self):
 
         make_type = "CREATE TYPE IF NOT EXISTS " + "gps_loc" +\
-                     "(longitude float, " + \
-                     "latitude float);"
+                     "(lng float, " + \
+                     "lat float);"
 
         self.session.execute(make_type)
 

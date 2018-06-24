@@ -7,6 +7,7 @@ from haversine import haversine
 from cassandra.cluster import Cluster
 from cass_man import Cassandra_Manager
 from pyspark_cassandra import CassandraSparkContext
+import pyspark_cassandra
 
 import json
 
@@ -28,7 +29,10 @@ dstream_combo = KafkaUtils.createDirectStream(ssc, ['COMBO'], {"bootstrap.server
 
 json_combo  = dstream_combo.map(lambda x: json.loads(x[1]))
 json_dist = json_combo.map(lambda data:distance(data))
-json_dist.saveToCassandra('users','locations')
+
+print(sc.cassandraTable("users","locations").select("phone_loc.lng").take(3))
+
+#json_dist.saveToCassandra('users','locations',)
 
 #json_list = json_dist.foreachRDD(lambda rdd: rdd.collect())
 #print(json_list)
