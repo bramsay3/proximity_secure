@@ -23,6 +23,7 @@ class Production:
             while True:
                 for i in range(len(data_feed)):
                     self.prod.produce(self.topic,str(data_feed[i]).replace("'",'"'))
+
                 time.sleep(3)
                 print('recycling data')
         else:
