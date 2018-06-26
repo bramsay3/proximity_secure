@@ -51,6 +51,7 @@ class Generator():
 
         for i in range(steps):
             self.crnt_user_data.extend(self.get_user_data())
+
         return self.crnt_user_data
 
 
@@ -130,18 +131,22 @@ class Generator():
 
 
     def update_coords(self):
-        new_locations = map(self.resample_coord, self.crnt_locations)
-        self.crnt_locations = list(new_locations)
+        #new_locations = [self.resample_coord(dic) for dic in self.crnt_locations]
+        self.crnt_locations = [*map(self.resample_coord, self.crnt_locations)]
+        
+        #new_locations = []
+        #for i in self.crnt_locations:
+        #    new_locations.append(self.resample_coord(i))
+
+        #self.crnt_locations = new_locations
 
 
 
     #want to call anything outside of .02 in a minute as flagged
     def resample_coord(self, coord_dic, lat_sig=.005, lng_sig=.005):
-        cov = np.diag([lat_sig,lng_sig]) #symetric
-        coord = list(coord_dic.values())
-
-        new_coord = np.random.multivariate_normal(np.asarray(coord), cov)
-        dict_entry = self.add_gps_to_dic(new_coord[0],new_coord[1])
+        new_lat = np.random.normal(coord_dic['lat'], lat_sig)
+        new_lng = np.random.normal(coord_dic['lng'], lng_sig)
+        dict_entry = self.add_gps_to_dic(new_lat,new_lng)
 
         return dict_entry
 

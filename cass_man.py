@@ -20,6 +20,7 @@ class Cassandra_Manager():
     def set_keyspace(self, keyspace_name):
         self.is_str(keyspace_name)
         self.keyspace_name = keyspace_name
+        self.session.execute('USE ' + keyspace_name)
         print('Using Keyspace:  ' + keyspace_name)
 
     def set_table(self, table_name):
