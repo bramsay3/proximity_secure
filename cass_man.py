@@ -58,15 +58,14 @@ class Cassandra_Manager():
 
     def create_table(self, table_name = 'locations'):
         self.is_str(table_name)
-        self.create_type()
         make_table = "CREATE TABLE IF NOT EXISTS " + table_name + \
-                     "(USER_ID int, " + \
-                     "TRANSACTIONS_TIMESTAMP timestamp, " +\
+                     "(\"USER_ID\" int, " + \
+                     "\"TRANSACTIONS_TIMESTAMP\" timestamp, " +\
                      "distance float, " +\
-                     "PHONE_LOC FROZEN<gps_loc>, " +\
-                     "TRANSACTION_LOC FROZEN<gps_loc>, " +\
-                     "PHONE_TIMESTAMP timestamp, " +\
-                     "PRIMARY KEY (USER_ID, TRANSACTIONS_TIMESTAMP));"
+                     "\"PHONE_LOC\" map<text, float>, " +\
+                     "\"TRANSACTION_LOC\" map<text, float>, " +\
+                     "\"PHONE_TIMESTAMP\" timestamp, " +\
+                     "PRIMARY KEY (\"USER_ID\", \"TRANSACTIONS_TIMESTAMP\"));"
 
         self.session.execute(make_table)
         self.set_table(table_name)
