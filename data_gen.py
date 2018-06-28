@@ -74,7 +74,7 @@ class Generator():
         """Chooses which users are making a transaction in this minute
         transaction rate is in trasactions per user per hour"""
 
-        transaction_num = int(np.ceil(transaction_rate * self.N / (60 * 60)))
+        transaction_num = int(np.ceil(transaction_rate * self.N / 60))
         spenders = np.random.choice(self.N, transaction_num, replace=False)
 
         return spenders
