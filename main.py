@@ -8,12 +8,16 @@ phone_prod = Production('phone_loc')
 trans_prod = Production('trans_loc')
 
 print('producting')
-for i in range(10):
+while True:
+    start = time.time()
     [phone,trans] = gen.get_next_min()
-    print('phone',i)
-    time.sleep(.01)
     phone_prod.start_producing(phone)
-    print('transaction',i)
-    time.sleep(.01)
-    trans_prod.start_producing(trans)    
-print('done')
+    trans_prod.start_producing(trans) 
+    end = time.time()  
+    duration = start - end
+    wait = 60 - duration
+    if duration > 60:
+        raise Exception("Data generation exceeded 1 minute")
+    print("Data generation time: ",duration, "seconds")
+    print("Waiting ",wait," seconds till next generation")
+    time.sleep(wait)
