@@ -2,7 +2,7 @@ from data_gen import Generator
 import time
 
 
-gen = Generator('phone',1000000,1)
+gen = Generator(10000000)
 start = time.time()
-gen.get_user_data()
+gen.get_next_min()
 print(time.time()-start)
