@@ -1,10 +1,19 @@
 from data_gen import Generator
 from producers import Production
+import time
 
+gen = Generator(100)
 
-gen = Generator('phone',100,60)
-data = gen.gen_user_data_all()
+phone_prod = Production('phone_loc')
+trans_prod = Production('trans_loc')
 
-prod = Production('phone_loc')
-
-prod.start_producing(data,True)
+print('producting')
+for i in range(10):
+    [phone,trans] = gen.get_next_min()
+    print('phone',i)
+    time.sleep(.01)
+    phone_prod.start_producing(phone)
+    print('transaction',i)
+    time.sleep(.01)
+    trans_prod.start_producing(trans)    
+print('done')

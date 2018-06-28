@@ -2,7 +2,8 @@ from data_gen import Generator
 import time
 
 
-gen = Generator(10000000)
+gen = Generator(100)
 start = time.time()
-gen.get_next_min()
+save = gen.get_next_min()
+print(save)
 print(time.time()-start)
