@@ -9,15 +9,14 @@ from cass_man import Cassandra_Manager
 from pyspark_cassandra import CassandraSparkContext, streaming
 import pyspark_cassandra
 
-
 import json
 
-
+cassandra_node_IP = "ec2-18-233-215-146.compute-1.amazonaws.com"
 
 conf = SparkConf() \
     .setAppName("proximity_secure") \
     .setMaster('local[*]') \
-    .set("spark.cassandra.connection.host","ec2-18-233-215-146.compute-1.amazonaws.com")
+    .set("spark.cassandra.connection.host", cassandra_node_IP)
 
 sc = CassandraSparkContext(conf = conf)
 sc.setLogLevel("WARN")
@@ -25,7 +24,6 @@ sc.setLogLevel("WARN")
 
 #Create streaming context with mini-batch interval of 1 second
 ssc = StreamingContext(sc, 2)
-
 dstream_combo = KafkaUtils.createDirectStream(ssc, ['COMBO'], {"bootstrap.servers": 'localhost:9092'})
 
 
