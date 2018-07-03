@@ -25,7 +25,7 @@ def table():
 
        header = ['User ID','Transaction Location','Transaction Time','Phone Location','Phone Time','Distance(miles)']
            
-       return render_template("table.html", header=header, rows = results)
+       return render_template("Table_Fixed_Header/temp.html", header=header, rows = results)
 
 
 
