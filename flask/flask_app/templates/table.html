@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <script type = "text/JavaScript">
+      function AutoRefresh( t ) {
+      setTimeout("location.reload(true);", t);
+      }
+    </script>
+    <style>
+      table, th, td {
+        border: 1px solid black;
+        border-collapse: collapse;
+      }
+      th, td {
+        padding: 5px;
+        text-align: left;
+      }
+    </style>
+  </head>
+  <body onload  = "JavaScript:AutoRefresh(5000);">
+    <h2> Flagged Transactions </h2>
+    <div id='table'>
+    <table align="center", style="width:95%">
+      <tr>
+      {% for val in header %}
+      <th>{{val}}</th>
+      {% endfor %}
+      </tr>
+      {% for entry in rows %}
+      <tr>
+        <td>{{ entry.USER_ID }}</td>
+        <td>{{ entry.TRANS_LOC }}</td>
+        <td>{{ entry.TRANSACTIONS_TIMESTAMP }}</td>
+        <td>{{ entry.PHONE_LOC }}</td>
+        <td>{{ entry.PHONE_TIMESTAMP }}</td>
+        <td>{{ entry.distance }}</td>    
+      </tr>
+      {% endfor %}
+    </table>
+    </div>
+  </body>
+</html>
+
