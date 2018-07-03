@@ -5,20 +5,20 @@
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 <!--===============================================================================================-->
-	<link rel="icon" type="image/png" href="images/icons/favicon.ico"/>
+	<link rel="icon" type="image/png" href="Table_Fixed_Header/images/icons/favicon.ico"/>
 <!--===============================================================================================-->
-	<link rel="stylesheet" type="text/css" href="vendor/bootstrap/css/bootstrap.min.css">
+	<link rel="stylesheet" type="text/css" href="Table_Fixed_Header/vendor/bootstrap/css/bootstrap.min.css">
 <!--===============================================================================================-->
-	<link rel="stylesheet" type="text/css" href="fonts/font-awesome-4.7.0/css/font-awesome.min.css">
+	<link rel="stylesheet" type="text/css" href="Table_Fixed_Header/fonts/font-awesome-4.7.0/css/font-awesome.min.css">
 <!--===============================================================================================-->
-	<link rel="stylesheet" type="text/css" href="vendor/animate/animate.css">
+	<link rel="stylesheet" type="text/css" href="Table_Fixed_Header/vendor/animate/animate.css">
 <!--===============================================================================================-->
-	<link rel="stylesheet" type="text/css" href="vendor/select2/select2.min.css">
+	<link rel="stylesheet" type="text/css" href="Table_Fixed_Header/vendor/select2/select2.min.css">
 <!--===============================================================================================-->
-	<link rel="stylesheet" type="text/css" href="vendor/perfect-scrollbar/perfect-scrollbar.css">
+	<link rel="stylesheet" type="text/css" href="Table_Fixed_Header/vendor/perfect-scrollbar/perfect-scrollbar.css">
 <!--===============================================================================================-->
-	<link rel="stylesheet" type="text/css" href="css/util.css">
-	<link rel="stylesheet" type="text/css" href="css/main.css">
+	<link rel="stylesheet" type="text/css" href="Table_Fixed_Header/css/util.css">
+	<link rel="stylesheet" type="text/css" href="Table_Fixed_Header/css/main.css">
 <!--===============================================================================================-->
 </head>
 <body>
@@ -44,12 +44,12 @@
 							<tbody>
 								{% for entry in rows %}
 								<tr class="row100 body">
-									<td class="cell100 column{{loop.index0}}">{{ entry.USER_ID }}</td>
-									<td class="cell100 column{{loop.index0}}">{{ entry.TRANS_LOC }}</td>
-									<td class="cell100 column{{loop.index0}}">{{ entry.TRANSACTIONS_TIMESTAMP }}</td>
-									<td class="cell100 column{{loop.index0}}">{{ entry.PHONE_LOC }}</td>
-									<td class="cell100 column{{loop.index0}}">{{ entry.PHONE_TIMESTAMP }}</td>
-									<td class="cell100 column{{loop.index0}}">{{ entry.distance }}</td>    
+									<td class="cell100 column1">{{ entry.USER_ID }}</td>
+									<td class="cell100 column2">{{ entry.TRANS_LOC }}</td>
+									<td class="cell100 column3">{{ entry.TRANSACTIONS_TIMESTAMP }}</td>
+									<td class="cell100 column4">{{ entry.PHONE_LOC }}</td>
+									<td class="cell100 column5">{{ entry.PHONE_TIMESTAMP }}</td>
+									<td class="cell100 column6">{{ entry.distance }}</td>
 								</tr>
 								{% endfor %}
 							</tbody>
@@ -62,14 +62,14 @@
 
 
 <!--===============================================================================================-->
-	<script src="vendor/jquery/jquery-3.2.1.min.js"></script>
+	<script src="Table_Fixed_Header/vendor/jquery/jquery-3.2.1.min.js"></script>
 <!--===============================================================================================-->
-	<script src="vendor/bootstrap/js/popper.js"></script>
-	<script src="vendor/bootstrap/js/bootstrap.min.js"></script>
+	<script src="Table_Fixed_Header/vendor/bootstrap/js/popper.js"></script>
+	<script src="Table_Fixed_Header/vendor/bootstrap/js/bootstrap.min.js"></script>
 <!--===============================================================================================-->
-	<script src="vendor/select2/select2.min.js"></script>
+	<script src="Table_Fixed_Header/vendor/select2/select2.min.js"></script>
 <!--===============================================================================================-->
-	<script src="vendor/perfect-scrollbar/perfect-scrollbar.min.js"></script>
+	<script src="Table_Fixed_Header/vendor/perfect-scrollbar/perfect-scrollbar.min.js"></script>
 	<script>
 		$('.js-pscroll').each(function(){
 			var ps = new PerfectScrollbar(this);
@@ -92,7 +92,7 @@
 </script>
 
 <!--===============================================================================================-->
-	<script src="js/main.js"></script>
+	<script src="Table_Fixed_Header/js/main.js"></script>
 
 </body>
 </html>
