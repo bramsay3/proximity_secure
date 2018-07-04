@@ -18,14 +18,26 @@ def table():
        cluster = Cluster(['ec2-18-233-215-146.compute-1.amazonaws.com'])
        session = cluster.connect()
 #       session = cluster.connect(['ec2-18-233-215-146.compute-1.amazonaws.com','ec2-34-234-45-181.compute-1.amazonaws.com','ec2-52-20-107-122.compute-1.amazonaws.com'])
-       session.row_factory =  named_tuple_factory
+       session.row_factory =  dict_factory
        cql = "SELECT * FROM users.locations LIMIT 10"
        results = session.execute(cql)
-       
+       def stringify_query(row):
+           def stringify_loc(location_json):
+                      lng = location_json['lng']
+                      lat = location_json['lat']
+                      string = 'Lat: {}   Lng: {}'.format(lng,lat)
+                      return string
+
+           phone_loc_str = stringify_loc(row['PHONE_LOC'])
+           trans_loc_str = stringify_loc(row['TRANS_LOC'])
+           row['PHONE_LOC'] = phone_loc_str
+           row['TRANS_LOC'] = trans_loc_str
+           return row
+
+       rows = list(map(lambda row:stringify_query(row),results))
 
        header = ['User ID','Transaction Location','Transaction Time','Phone Location','Phone Time','Distance(miles)']
-           
-       return render_template("Table_Fixed_Header/temp.html", header=header, rows = results)
+       return render_template("temp.html", header=header, rows = rows)
 
 
 
