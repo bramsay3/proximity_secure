@@ -25,13 +25,15 @@ def table():
            def stringify_loc(location_json):
                       lng = location_json['lng']
                       lat = location_json['lat']
-                      string = 'Lat: {}   Lng: {}'.format(lng,lat)
+                      string = 'Lat: {}   Lng: {}'.format(round(lng,2),round(lat,2))
                       return string
 
            phone_loc_str = stringify_loc(row['PHONE_LOC'])
            trans_loc_str = stringify_loc(row['TRANS_LOC'])
+           distance = round(row['distance'],2)
            row['PHONE_LOC'] = phone_loc_str
            row['TRANS_LOC'] = trans_loc_str
+           row['distance'] = distance
            return row
 
        rows = list(map(lambda row:stringify_query(row),results))
