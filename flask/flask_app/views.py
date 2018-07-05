@@ -1,4 +1,4 @@
-from flask import render_template
+from flask import render_template, request
 from flask_app import app
 from cassandra.cluster import Cluster
 from cassandra.query import *
@@ -9,12 +9,18 @@ def map():
     return render_template("map.html")
 
 
-@app.route("/table")
+@app.route("/table", methods=['GET','POST'])
 def table():
     cluster = Cluster(['ec2-18-233-215-146.compute-1.amazonaws.com'])
     session = cluster.connect()
     #       session = cluster.connect(['ec2-18-233-215-146.compute-1.amazonaws.com','ec2-34-234-45-181.compute-1.amazonaws.com','ec2-52-20-107-122.compute-1.amazonaws.com'])
     session.row_factory =  dict_factory
+
+    if request.method is 'POST':
+        #request.form.get()
+
+    else:
+
     cql = "SELECT * FROM users.locations LIMIT 10"
     results = session.execute(cql)
     def stringify_query(row):
