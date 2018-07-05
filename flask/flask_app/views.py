@@ -36,7 +36,7 @@ def table():
        row['distance'] = distance
        return row
 
-    rows = list(map(lambda row:stringify_query(row),results))
+    rows = [stringify_query(row) for row in results]
 
     header = ['User ID','Transaction Location','Transaction Time','Phone Location','Phone Time','Distance(miles)']
     return render_template("temp.html", header=header, rows = rows)
