@@ -1,8 +1,7 @@
 $(document).ready(function() {
 
-    $('.table100.ver5 .table100-body tr ').click(function() {
+    $('.table100-body').click(function() {
             window.location = "hi";
-        }
     });
 
 });

@@ -2,12 +2,18 @@ from data_gen import Generator
 from producers import Production
 import time
 
-gen = Generator(200000)
+gen = Generator(100000)
 
 phone_prod = Production('phone_loc')
 trans_prod = Production('trans_loc')
 
+print('purging')
+[phone,trans] = gen.get_next_min()
+phone_prod.start_producing(phone)
+time.sleep(30)
+trans_prod.start_producing(trans) 
 print('producting')
+
 while True:
     start = time.time()
     [phone,trans] = gen.get_next_min()

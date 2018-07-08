@@ -31,6 +31,9 @@ json_combo  = dstream_combo.map(lambda x: json.loads(x[1]))
 json_combo.pprint(100)
 json_dist = json_combo.map(lambda data:distance(data))
 
+flagged = json_dist.filter(lambda json:json['distance']>1.25)
+
+flagged.saveToCassandra('users','flagged')
 
 json_dist.pprint(100)
 json_dist.saveToCassandra('users','locations')

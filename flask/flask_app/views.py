@@ -18,10 +18,11 @@ def table():
 
     if request.method is 'POST':
         #request.form.get()
+        print('here')
 
     else:
-
-    cql = "SELECT * FROM users.locations LIMIT 10"
+        print('else')
+    cql = "SELECT * FROM users.flagged"
     results = session.execute(cql)
     def stringify_query(row):
        def stringify_loc(location_json):
