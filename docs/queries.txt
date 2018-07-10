@@ -1,0 +1,36 @@
+
+
+transaction stream:
+
+CREATE STREAM transactions (trans_loc varchar, user_ID bigint, timestamp varchar) WITH (kafka_topic = 'trans_loc', value_format = 'json');
+
+
+placeholder phone stream:
+
+CREATE STREAM phone_stream (phone_loc varchar, user_ID bigint, timestamp varchar) WITH (kafka_topic = 'phone_loc', value_format = 'json');
+
+
+placeholder rekey phone stream:
+
+CREATE STREAM phone_stream_rekey AS SELECT * FROM phone_stream PARTITION BY user_ID;
+
+
+phone table:
+
+CREATE TABLE phone (phone_loc varchar, user_ID bigint, timestamp varchar) WITH (kafka_topic ='PHONE_STREAM_REKEY', value_format = 'json', key='user_ID');
+
+left join stream:
+
+CREATE STREAM combo AS SELECT transactions.user_ID as user_ID, phone_loc, phone.timestamp, trans_loc, transactions.timestamp FROM transactions LEFT JOIN phone ON transactions.user_ID=phone.user_ID;
+
+
+Cassandra:
+CREATE TABLE users.locations (
+    "USER_ID" int,
+    "TRANSACTIONS_TIMESTAMP" timestamp,
+    "PHONE_LOC" map<text, float>,
+    "PHONE_TIMESTAMP" timestamp,
+    "TRANS_LOC" map<text, float>,
+    distance float,
+    PRIMARY KEY ("USER_ID", "TRANSACTIONS_TIMESTAMP")
+) WITH CLUSTERING ORDER BY ("TRANSACTIONS_TIMESTAMP" ASC)

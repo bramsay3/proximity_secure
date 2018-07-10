@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <script type = "text/JavaScript">
+      function AutoRefresh( t ) {
+      setTimeout("location.reload(true);", t);
+      }
+    </script>
+	<title>Table V04</title>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+<!--===============================================================================================-->
+	<link rel="icon" type="image/png" href="static/Table_Fixed_Header/images/icons/favicon.ico"/>
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="static/Table_Fixed_Header/vendor/bootstrap/css/bootstrap.min.css">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="static/Table_Fixed_Header/fonts/font-awesome-4.7.0/css/font-awesome.min.css">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="static/Table_Fixed_Header/vendor/animate/animate.css">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="static/Table_Fixed_Header/vendor/select2/select2.min.css">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="static/Table_Fixed_Header/vendor/perfect-scrollbar/perfect-scrollbar.css">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="static/Table_Fixed_Header/css/util.css">
+	<link rel="stylesheet" type="text/css" href="static/Table_Fixed_Header/css/main.css">
+<!--===============================================================================================-->
+	<script src="static/js/my.js"></script>
+</head>
+<body onload  = "JavaScript:AutoRefresh(15000);">
+
+	<div class="limiter">
+		<div class="container-table100">
+			<div class="wrap-table100">
+				<div class="table100 ver5 m-b-110">
+					<div class="table100-head">
+						<table>
+							<thead>
+								<tr class="row100 head">
+									{% for val in header %}
+      								<th class="cell100 column{{loop.index0}}">{{val}}</th>
+      								{% endfor %}									
+								</tr>
+							</thead>
+						</table>
+					</div>
+
+					<div class="table100-body js-pscroll">
+						<table>
+							<tbody>
+								{% for entry in rows %}
+								<tr class="row100 body">
+									<td class="cell100 column0">{{ entry['USER_ID'] }}</td>
+									<td class="cell100 column1">{{ entry['TRANS_LOC'] }}</td>
+									<td class="cell100 column2">{{ entry['TRANSACTIONS_TIMESTAMP'] }}</td>
+									<td class="cell100 column3">{{ entry['PHONE_LOC'] }}</td>
+									<td class="cell100 column4">{{ entry['PHONE_TIMESTAMP'] }}</td>
+									<td class="cell100 column5">{{ entry['distance'] }}</td>
+								</tr>
+								{% endfor %}
+							</tbody>
+						</table>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+
+<!--===============================================================================================-->
+	<script src="static/Table_Fixed_Header/vendor/jquery/jquery-3.2.1.min.js"></script>
+<!--===============================================================================================-->
+	<script src="static/Table_Fixed_Header/vendor/bootstrap/js/popper.js"></script>
+	<script src="static/Table_Fixed_Header/vendor/bootstrap/js/bootstrap.min.js"></script>
+<!--===============================================================================================-->
+	<script src="static/Table_Fixed_Header/vendor/select2/select2.min.js"></script>
+<!--===============================================================================================-->
+	<script src="static/Table_Fixed_Header/vendor/perfect-scrollbar/perfect-scrollbar.min.js"></script>
+	<script>
+		$('.js-pscroll').each(function(){
+			var ps = new PerfectScrollbar(this);
+
+			$(window).on('resize', function(){
+				ps.update();
+			})
+		});
+
+
+	</script>
+	<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-23581568-13"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-23581568-13');
+</script>
+
+<!--===============================================================================================-->
+	<script src="static/Table_Fixed_Header/js/main.js"></script>
+
+</body>
+</html>
