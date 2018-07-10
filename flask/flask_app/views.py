@@ -11,7 +11,7 @@ def map():
 
 @app.route("/table", methods=['GET','POST'])
 def table():
-    cluster = Cluster(['ec2-18-233-215-146.compute-1.amazonaws.com'])
+    cluster = Cluster(['ec2-18-233-215-146.compute-1.amazonaws.com'], load_balancing_policy=cassandra.policies.RoundRobinPolicy())
     session = cluster.connect()
     #       session = cluster.connect(['ec2-18-233-215-146.compute-1.amazonaws.com','ec2-34-234-45-181.compute-1.amazonaws.com','ec2-52-20-107-122.compute-1.amazonaws.com'])
     session.row_factory =  dict_factory
