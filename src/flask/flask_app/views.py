@@ -8,7 +8,7 @@ from cassandra.query import *
 def map():
     return render_template("map.html")
 
-
+@app.route('/')
 @app.route("/table", methods=['GET','POST'])
 def table():
     cluster = Cluster(['ec2-18-233-215-146.compute-1.amazonaws.com'], load_balancing_policy=cassandra.policies.RoundRobinPolicy())
@@ -24,6 +24,10 @@ def table():
         print('else')
     cql = "SELECT * FROM users.flagged"
     results = session.execute(cql)
+
+    session.shutdown()
+    cluster.shutdown()
+    
     def stringify_query(row):
        def stringify_loc(location_json):
                   lng = location_json['lng']
@@ -38,7 +42,7 @@ def table():
        distance = round(row['distance'],2)
        row['PHONE_TIMESTAMP'] = phone_date.strftime("%B %d, %Y %I:%M%p")
        row['TRANSACTIONS_TIMESTAMP'] = trans_date.strftime("%B %d, %Y %I:%M%p")
-       row['PHONE_LOC'] = phone_loc_str
+p       row['PHONE_LOC'] = phone_loc_str
        row['TRANS_LOC'] = trans_loc_str
        row['distance'] = distance
        return row
@@ -50,8 +54,3 @@ def table():
 
 
 
-@app.route('/')
-@app.route('/index')
-def index():
-       user = { 'nickname': 'Miguel' } # fake user
-       return render_template("index.html", title="Home", user=user)
