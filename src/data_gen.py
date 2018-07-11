@@ -101,9 +101,7 @@ class Generator():
         """Fields            Format                 Description:
        Customer ID     =>     <#>                    1 to self.N (primary key)
        Timestamp       =>     <DDMMYYYY:SSMMHH?>     Time of generation
-       ?Velocity       =>     <#>                     
-       Location        =>     <"lat":#, "lng":#>
-       ?Address        =>     <func(location)>
+       Location        =>     <"lat":#, "lng":#>     Generated from resample_coord
         """
         user_entry = {}
         topic_name = data_type+'_loc'

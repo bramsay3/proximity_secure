@@ -69,13 +69,15 @@ Cassandra was chosen since this project needed a database that was able to handl
 
 #### Flask
 
+Version: 1.0.2
+
 Flask provided a front end visualization of the flagged transactions. It would query the flagged results from Cassandra and display them in a table. To see this look at the demo section
 
 ## Demo
 
-Demo link: [Proximity_Alert](http://www.theproximityalert.com/table)
+Demo link: [Proximity Alert Live Demo](http://www.theproximityalert.com/table)
 
-Demo video: ???
+Demo video: [Proximity Alert Video Demo](https://www.youtube.com/watch?v=h77NCA6jjfY&feature=youtu.be)
 
 
 

@@ -1,9 +1,10 @@
-
-
 from cassandra.cluster import Cluster
 
 
 class Cassandra_Manager():
+    """ This class is in charge of running commands to create tables 
+        and keysapce in the cassandra table.
+    """
 
     def __init__(self, cluser_IP=['ec2-18-233-215-146.compute-1.amazonaws.com']):
         cluster = Cluster(cluser_IP)
