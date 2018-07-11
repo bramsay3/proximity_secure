@@ -13,6 +13,7 @@ import json
 
 cassandra_node_IP = "ec2-18-233-215-146.compute-1.amazonaws.com"
 
+# configure file for the cassandra context
 conf = SparkConf() \
     .setAppName("proximity_secure") \
     .setMaster('local[*]') \
@@ -21,24 +22,25 @@ conf = SparkConf() \
 sc = CassandraSparkContext(conf = conf)
 sc.setLogLevel("WARN")
 
-
-#Create streaming context with mini-batch interval of 1 second
+# Create streaming context with mini-batch interval of 2 second
 ssc = StreamingContext(sc, 2)
-dstream_combo = KafkaUtils.createDirectStream(ssc, ['COMBO'], {"bootstrap.servers": 'localhost:9092'})
 
+# Listens to kafka topic COMBO from one of the nodes in the kafka cluster
+dstream_combo = KafkaUtils.createDirectStream(ssc, ['COMBO'], {"bootstrap.servers": 'ec2-52-0-13-173.compute-1.amazonaws.com:9092'})
 
+# load json data from stream
 json_combo  = dstream_combo.map(lambda x: json.loads(x[1]))
-json_combo.pprint(100)
+# calculate distance between locations
 json_dist = json_combo.map(lambda data:distance(data))
-
-flagged = json_dist.filter(lambda json:json['distance']>1.25)
-
-flagged.saveToCassandra('users','flagged')
-
-json_dist.pprint(100)
 json_dist.saveToCassandra('users','locations')
 
+# filter out the values that should be flagged
+flagged = json_dist.filter(lambda json:json['distance']>1.5)
+flagged.saveToCassandra('users','flagged')
 
+json_dist.pprint(1)
+
+# function to find the distance between locations in json
 def distance(json_data, miles=True):
     def extract_coords(topic_name):
         gps = json.loads(json_data[topic_name])
@@ -51,7 +53,6 @@ def distance(json_data, miles=True):
     loc_1 = extract_coords('PHONE_LOC')
     loc_2 = extract_coords('TRANS_LOC')
     distance = haversine(loc_1, loc_2, miles=miles)
-
     json_data['distance'] = distance
     
     return json_data
