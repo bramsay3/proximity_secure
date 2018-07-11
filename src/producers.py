@@ -15,8 +15,10 @@ class Production:
         #Phone location producer configuration
         config = {'bootstrap.servers': broker,
                    'client.id': socket.gethostname(),
-                   'queue.buffering.max.messages': 1000000}
+                   'queue.buffering.max.messages': 1000000,
+                   'queue.buffering.max.ms': 5000}
 
+        
         self.prod = Producer(**config)
 
     def start_producing(self, data_feed, continuous=False):
@@ -30,5 +32,5 @@ class Production:
         else:
             for i in range(len(data_feed)):
                 self.prod.produce(self.topic,str(data_feed[i]).replace("'",'"'))
-            self.prod.poll(0)
+            #self.prod.poll(0)
             
