@@ -42,7 +42,7 @@ def table():
        distance = round(row['distance'],2)
        row['PHONE_TIMESTAMP'] = phone_date.strftime("%B %d, %Y %I:%M%p")
        row['TRANSACTIONS_TIMESTAMP'] = trans_date.strftime("%B %d, %Y %I:%M%p")
-p       row['PHONE_LOC'] = phone_loc_str
+       row['PHONE_LOC'] = phone_loc_str
        row['TRANS_LOC'] = trans_loc_str
        row['distance'] = distance
        return row

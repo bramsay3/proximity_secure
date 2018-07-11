@@ -24,7 +24,7 @@ sc.setLogLevel("WARN")
 
 #Create streaming context with mini-batch interval of 1 second
 ssc = StreamingContext(sc, 2)
-dstream_combo = KafkaUtils.createDirectStream(ssc, ['COMBO'], {"bootstrap.servers": 'localhost:9092'})
+dstream_combo = KafkaUtils.createDirectStream(ssc, ['COMBO'], {"bootstrap.servers": 'localhost:9092'}) #maybe try ec2-52-0-13-173.compute-1.amazonaws.com
 
 
 json_combo  = dstream_combo.map(lambda x: json.loads(x[1]))
