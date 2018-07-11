@@ -9,16 +9,18 @@ Credit card fraud has been a problem for both customers and banks since its the 
 
 Credit information being stolen is become more pervasive in our technology based society and our institutions are struggling to keep up. Recent breaches of customer information effected 30% of US consumers in 2017 and are causing the public to lose faith in these institutions' ability to keep their data safe.
 
+<p align="center"><img width="80%" src="imgs/IDF2018_Javelin_PressReleaseChart.png" /></p>
+
 ### Fraud Detection System
 As credit card fraud is becoming increasing more common, it is important to recognize when a costumer's account has been compromised to mitigate any further damages.
 
 **Proximity Alert** harnesses user location data along with transaction location data to make informed decisions on if any given transaction is actually being made by the customer. Effectively using the customer's location as an additional means of transaction authentication.
 
-If a transaction is flagged as being potentially fraudulent, actions could be taken to prevent possible damages to the user's account.
+If a transaction is flagged as being potentially/ fraudulent, actions could be taken to prevent possible damages to the user's account.
 
 ## Pipeline
 
-**put image here**
+<p align="center"><img width="80%" src="imgs/pipeline.png" /></p>
 
 This pipeline was hosted on Amazon AWS EC2 m4.large running Ubuntu. The initial set up was handled by Insigiht's custom EC2 manager [Pegasus](https://github.com/InsightDataScience/pegasus).
 
@@ -26,7 +28,7 @@ This pipeline was hosted on Amazon AWS EC2 m4.large running Ubuntu. The initial 
 
 I was unable to gain access to real phone and transaction location data for this project so I wrote a Python script to generate realistic GPS locations.
 
-**put sample range here**
+<p align="center"><img width="80%" src="imgs/data_gen_field.png" /></p>
 
 Locations were sampled from an approximate rectangle on the United States mainland. This was done to ensure that all GPS locations were located on land and not in the middle of the ocean.
 
