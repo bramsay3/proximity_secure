@@ -12,7 +12,7 @@ CREATE STREAM phone_stream (phone_loc varchar, user_ID bigint, timestamp varchar
 
 placeholder rekey phone stream:
 
-CREATE STREAM phone_stream_rekey AS SELECT * FROM phone_stream PARTITION BY user_ID;
+CREATE STREAM phone_stream_rekey WITH (PARTITIONS = 4, REPLICAS = 2) AS SELECT * FROM phone_stream PARTITION BY user_ID;
 
 
 phone table:
@@ -21,7 +21,7 @@ CREATE TABLE phone (phone_loc varchar, user_ID bigint, timestamp varchar) WITH (
 
 left join stream:
 
-CREATE STREAM combo AS SELECT transactions.user_ID as user_ID, phone_loc, phone.timestamp, trans_loc, transactions.timestamp FROM transactions LEFT JOIN phone ON transactions.user_ID=phone.user_ID;
+CREATE STREAM combo WITH (PARTITIONS = 4, REPLICAS = 2) AS SELECT transactions.user_ID as user_ID, phone_loc, phone.timestamp, trans_loc, transactions.timestamp FROM transactions LEFT JOIN phone ON transactions.user_ID=phone.user_ID;
 
 
 Cassandra:
@@ -34,3 +34,15 @@ CREATE TABLE users.locations (
     distance float,
     PRIMARY KEY ("USER_ID", "TRANSACTIONS_TIMESTAMP")
 ) WITH CLUSTERING ORDER BY ("TRANSACTIONS_TIMESTAMP" ASC)
+
+CREATE TABLE users.flagged (
+    "USER_ID" int,
+    "TRANSACTIONS_TIMESTAMP" timestamp,
+    "PHONE_LOC" map<text, float>,
+    "PHONE_TIMESTAMP" timestamp,
+    "TRANS_LOC" map<text, float>,
+    distance float,
+    PRIMARY KEY ("USER_ID", "TRANSACTIONS_TIMESTAMP")
+) WITH CLUSTERING ORDER BY ("TRANSACTIONS_TIMESTAMP" ASC)
+
+
