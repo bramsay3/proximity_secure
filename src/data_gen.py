@@ -79,7 +79,7 @@ class Generator():
 
         return spenders
 
-    def resample_coord(self, location_array, lat_sig=.005, lng_sig=.005):
+    def resample_coord(self, location_array, lat_sig=.002, lng_sig=.002):
         """Want to call anything outside of .02 in a minute as flagged"""
         
         next_lat_array = np.random.normal(location_array[0], lat_sig)

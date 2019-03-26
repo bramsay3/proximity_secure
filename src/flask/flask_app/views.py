@@ -25,9 +25,6 @@ def table():
     cql = "SELECT * FROM users.flagged"
     results = session.execute(cql)
 
-    session.shutdown()
-    cluster.shutdown()
-    
     def stringify_query(row):
        def stringify_loc(location_json):
                   lng = location_json['lng']
@@ -49,6 +46,9 @@ def table():
 
     rows = [stringify_query(row) for row in results]
 
+    session.shutdown()
+    cluster.shutdown()
+    
     header = ['User ID','Transaction Location','Transaction Time','Phone Location','Phone Time','Distance(miles)']
     return render_template("temp.html", header=header, rows = rows)
 
