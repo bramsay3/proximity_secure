@@ -75,7 +75,7 @@ Flask provided a front end visualization of the flagged transactions. It would q
 
 ## Demo
 
-Demo link: [Proximity Alert Live Demo [Inactive]](http://www.theproximityalert.com/table)
+Demo link: [Proximity Alert Live Demo [INACTIVE]](http://www.theproximityalert.com/table)
 
 Demo video: [Proximity Alert Video Demo](https://www.youtube.com/watch?v=h77NCA6jjfY&feature=youtu.be)
 
