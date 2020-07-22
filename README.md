@@ -1,4 +1,5 @@
 # Proximity Alert
+
 Proximity alert is a real-time credit card fraud detection system based on phone and transaction location data
 
 This a project that was developed at the 2018 summer session of an fellowship at Insight Data Science.
